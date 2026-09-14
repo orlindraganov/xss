@@ -1,0 +1,17 @@
+@model xss.Models.XssLabInput
+@{
+    Layout = "~/Views/XssLab/_Layout.cshtml";
+    ViewBag.Title = "Reflected XSS";
+}
+<h2>Reflected XSS</h2>
+@using (Html.BeginForm("Reflected", "XssLab", FormMethod.Get))
+{
+    <label for="Value">HTML test input</label>
+    @Html.TextBoxFor(model => model.Value)
+    <button type="submit">Reflect input</button>
+}
+<h3>Vulnerable output</h3>
+@* Intentional CWE-79: query-string input reaches an unencoded HTML sink. *@
+<div id="vulnerable-output">@Html.Raw(Model.Value)</div>
+<h3>Encoded comparison</h3>
+<pre id="encoded-output">@Model.Value</pre>

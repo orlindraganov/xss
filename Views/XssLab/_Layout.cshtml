@@ -1,0 +1,26 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewBag.Title - Intentional XSS Lab</title>
+</head>
+<body>
+    <header>
+        <h1>Intentional XSS Lab</h1>
+        <p><strong>WARNING: Deliberately vulnerable scanner fixtures. Local testing only. Never deploy to a shared or production environment.</strong></p>
+        <nav>
+            @Html.ActionLink("Overview", "Index", "XssLab") |
+            @Html.ActionLink("Reflected XSS", "Reflected", "XssLab") |
+            @Html.ActionLink("Stored XSS", "Stored", "XssLab") |
+            @Html.ActionLink("DOM XSS", "Dom", "XssLab")
+        </nav>
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+</body>
+</html>

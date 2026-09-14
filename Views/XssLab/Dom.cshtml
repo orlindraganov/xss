@@ -1,0 +1,16 @@
+@{
+    Layout = "~/Views/XssLab/_Layout.cshtml";
+    ViewBag.Title = "DOM XSS";
+}
+<h2>DOM-based XSS</h2>
+<p>The URL fragment is processed entirely in the browser; it is not sent to the server.</p>
+<form id="dom-form">
+    <label for="dom-input">HTML test input</label>
+    <input id="dom-input" type="text" />
+    <button type="submit">Render input</button>
+</form>
+<h3>Vulnerable output</h3>
+<div id="vulnerable-output"></div>
+<h3>Encoded comparison</h3>
+<pre id="encoded-output"></pre>
+<script src="@Url.Content("~/Scripts/xss-lab.js")"></script>

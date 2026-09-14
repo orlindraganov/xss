@@ -1,0 +1,24 @@
+@model xss.Models.XssLabInput
+@{
+    Layout = "~/Views/XssLab/_Layout.cshtml";
+    ViewBag.Title = "Stored XSS";
+}
+<h2>Stored XSS</h2>
+<p>Input is shared across local visitors and persists in App_Data/xss-lab.txt until cleared.</p>
+@using (Html.BeginForm("Stored", "XssLab", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <label for="Value">HTML test input</label>
+    @Html.TextAreaFor(model => model.Value)
+    <button type="submit">Save input</button>
+}
+@using (Html.BeginForm("ClearStored", "XssLab", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <button type="submit">Clear stored input</button>
+}
+<h3>Vulnerable output</h3>
+@* Intentional CWE-79: persisted input reaches an unencoded HTML sink. *@
+<div id="vulnerable-output">@Html.Raw(Model.Value)</div>
+<h3>Encoded comparison</h3>
+<pre id="encoded-output">@Model.Value</pre>
