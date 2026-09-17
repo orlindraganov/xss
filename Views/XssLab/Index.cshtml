@@ -8,7 +8,10 @@
     <li>Reflected: query-string Value flows through MVC model binding to Html.Raw.</li>
     <li>Stored: form Value is written to App_Data/xss-lab.txt, read on subsequent requests, and rendered with Html.Raw.</li>
     <li>DOM-based: the URL fragment is decoded and assigned to innerHTML in Scripts/xss-lab.js.</li>
+    <li>@Html.ActionLink("C# ContentResult XSS", "ContentResult", "XssLab"): query-string value is returned as unencoded HTML from the controller.</li>
+    <li>@Html.ActionLink("C# Response.Write XSS", "ResponseWrite", "XssLab"): query-string value is written directly to the HTML response in the controller.</li>
 </ul>
+<p>For the C#-only fixtures, append ?value= followed by a URL-encoded payload. See README.md for complete test URLs. These endpoints do not use Razor views.</p>
 <p>Paste this harmless demonstration payload into any test form:</p>
 <pre>&lt;img src=x onerror=alert('xss-lab')&gt;</pre>
 <p>The vulnerable output should display an alert. The encoded comparison should display literal text.</p>

@@ -31,6 +31,38 @@ namespace xss.Controllers
         }
 
         [HttpGet]
+        [ValidateInput(false)]
+        public ActionResult ContentResult()
+        {
+            var value = Request.Unvalidated.QueryString["value"] ?? string.Empty;
+
+            // Intentional CWE-79: query-string input reaches an HTML ContentResult without encoding.
+            return Content("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\" />"
+                + "<title>Intentional XSS Lab - ContentResult</title></head><body>"
+                + "<h1>C# ContentResult XSS</h1>"
+                + "<p><strong>WARNING: Deliberately vulnerable scanner fixture. Local testing only. Never deploy publicly.</strong></p>"
+                + "<div id=\"vulnerable-output\">" + value + "</div></body></html>", "text/html");
+        }
+
+        [HttpGet]
+        [ValidateInput(false)]
+        public ActionResult ResponseWrite()
+        {
+            var value = Request.Unvalidated.QueryString["value"] ?? string.Empty;
+            Response.ContentType = "text/html";
+            Response.Write("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\" />"
+                + "<title>Intentional XSS Lab - Response.Write</title></head><body>"
+                + "<h1>C# Response.Write XSS</h1>"
+                + "<p><strong>WARNING: Deliberately vulnerable scanner fixture. Local testing only. Never deploy publicly.</strong></p>"
+                + "<div id=\"vulnerable-output\">");
+
+            // Intentional CWE-79: query-string input is written directly to an HTML response.
+            Response.Write(value);
+            Response.Write("</div></body></html>");
+            return new EmptyResult();
+        }
+
+        [HttpGet]
         public ActionResult Stored()
         {
             var path = Server.MapPath("~/App_Data/xss-lab.txt");
